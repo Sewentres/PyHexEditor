@@ -24,3 +24,4 @@ if __name__ == "__main__":
 
     args = cmdline_args()
     Hex = HexFile(args.PATH)
+    Hex.format_file(Hex.file_name, "INTEL")

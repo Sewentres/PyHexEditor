@@ -26,7 +26,16 @@ class HexFile:
         Returns:
             string: Striped name of file
         """
-        return os.path.basename(self._file)
+        return os.path.splitext(os.path.basename(self._file))[0]
+
+    @property
+    def file_extension(self):
+        """Extension of hex file
+
+        Returns:
+            string: Striped extension of file
+        """
+        return os.path.splitext(os.path.basename(self._file))[1]
 
     def format_file(self, file_path, format_hex):
         """Function to convert a hex file to different format like Intel Hex,
