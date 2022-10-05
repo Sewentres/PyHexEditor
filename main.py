@@ -1,5 +1,6 @@
 import sys
 import argparse
+from src.srecord import HexFile
 
 
 def cmdline_args():
@@ -16,4 +17,4 @@ def cmdline_args():
 if __name__ == "__main__":
 
     args = cmdline_args()
-    print(args.PATH)
+    Hex = HexFile(args.PATH)
