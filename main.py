@@ -1,17 +1,23 @@
-import sys
+"""Main python starting script for Hex modification
+"""
 import argparse
 from src.srecord import HexFile
 
 
 def cmdline_args():
+    """Parser for input arguments.
+
+    Returns:
+        object: all parsered arguments.
+    """
     # Make parser object
-    p = argparse.ArgumentParser(
+    parser = argparse.ArgumentParser(
         description="", formatter_class=argparse.RawDescriptionHelpFormatter
     )
 
-    p.add_argument("--PATH", help="Path to hex file")
+    parser.add_argument("--PATH", help="Path to hex file")
 
-    return p.parse_args()
+    return parser.parse_args()
 
 
 if __name__ == "__main__":
