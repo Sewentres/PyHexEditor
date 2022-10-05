@@ -37,6 +37,15 @@ class HexFile:
         """
         return os.path.splitext(os.path.basename(self._file))[1]
 
+    @property
+    def script_path(self):
+        """Path to script
+
+        Returns:
+            string: Path to script
+        """
+        return os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
+
     def format_file(self, file_path, format_hex):
         """Function to convert a hex file to different format like Intel Hex,
         Motorola Srecord or Binary.
@@ -45,5 +54,9 @@ class HexFile:
             file_path (str): Path to input file
             format_hex (str): Format of output file
         """
-        print(rf"Input file = [{file_path}]")
-        print(rf"Format_hex = [{format_hex}]")
+        formats_dict = {"hex": "ihex", "s19": "srec", "bin": "binary"}
+        input_extension = os.path.splitext(os.path.basename(file_path))[1][1:]
+        file_name = os.path.splitext(os.path.basename(file_path))[0]
+        os.system(
+            rf"{self.script_path}\src\MinGW\objcopy.exe -I {formats_dict[input_extension]} -O {formats_dict[format_hex]} {file_path} {os.path.dirname(file_path)}\{file_name}.{format_hex}"
+        )
