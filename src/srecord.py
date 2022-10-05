@@ -58,5 +58,7 @@ class HexFile:
         input_extension = os.path.splitext(os.path.basename(file_path))[1][1:]
         file_name = os.path.splitext(os.path.basename(file_path))[0]
         os.system(
-            rf"{self.script_path}\src\MinGW\objcopy.exe -I {formats_dict[input_extension]} -O {formats_dict[format_hex]} {file_path} {os.path.dirname(file_path)}\{file_name}.{format_hex}"
+            rf"{self.script_path}\src\MinGW\objcopy.exe -I {formats_dict[input_extension]}"
+            + rf" -O {formats_dict[format_hex]} {file_path}"
+            + rf" {os.path.dirname(file_path)}\{file_name}.{format_hex}"
         )
