@@ -24,4 +24,7 @@ if __name__ == "__main__":
 
     args = cmdline_args()
     Hex = HexFile(args.PATH)
+    print("TESTING FILE FORMATING")
     Hex.format_file(Hex.file, "hex")
+    print("TESTING FILE ANALYSING")
+    print(Hex.analyse_s19(Hex.file))
