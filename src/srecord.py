@@ -109,3 +109,12 @@ class HexFile:
             }
             file_data.append(data)
         return file_data
+
+    def crc_check(self, data_hex):
+        data_hex = data_hex.replace(":", "")
+        sum = 0
+        for i in range(0, int(len(data_hex) / 2)):
+            byte = data_hex[i * 2 : (i * 2) + 2]
+            sum += int("0x" + byte, 16)
+        int_checksum = ((sum ^ 0xFF) + 1) & 0xFF - 1
+        return "{0:0{1}x}".format(int_checksum, 2)

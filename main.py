@@ -28,3 +28,4 @@ if __name__ == "__main__":
     Hex.format_file(Hex.file, "hex")
     print("TESTING FILE ANALYSING")
     print(Hex.analyse_s19(Hex.file))
+    print(Hex.crc_check("140451704060522040A45E2040C089FE3F28F0FE"))
