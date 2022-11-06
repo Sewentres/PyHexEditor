@@ -10,7 +10,6 @@ class HexFile:
         print(rf"Hex file: {file_path}")
         self._file = file_path
 
-    @property
     def file(self):
         """Path to hex file
 
@@ -19,7 +18,6 @@ class HexFile:
         """
         return self._file
 
-    @property
     def file_name(self):
         """Name of hex file
 
@@ -28,7 +26,6 @@ class HexFile:
         """
         return os.path.splitext(os.path.basename(self._file))[0]
 
-    @property
     def file_extension(self):
         """Extension of hex file
 
@@ -37,7 +34,6 @@ class HexFile:
         """
         return os.path.splitext(os.path.basename(self._file))[1]
 
-    @property
     def script_path(self):
         """Path to script
 
@@ -111,6 +107,14 @@ class HexFile:
         return file_data
 
     def crc_check(self, data_hex):
+        """Function to check crc checksum from data hex.
+
+        Args:
+            data_hex (str): Data from hex file
+
+        Returns:
+            str: CRC checksum
+        """
         data_hex = data_hex.replace(":", "")
         sum = 0
         for i in range(0, int(len(data_hex) / 2)):
