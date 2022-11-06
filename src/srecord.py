@@ -9,7 +9,9 @@ class HexFile:
     def __init__(self, file_path):
         print(rf"Hex file: {file_path}")
         self._file = file_path
+        self._s19_records = self.analyse_s19(file_path)
 
+    @property
     def file(self):
         """Path to hex file
 
@@ -18,6 +20,7 @@ class HexFile:
         """
         return self._file
 
+    @property
     def file_name(self):
         """Name of hex file
 
@@ -26,6 +29,7 @@ class HexFile:
         """
         return os.path.splitext(os.path.basename(self._file))[0]
 
+    @property
     def file_extension(self):
         """Extension of hex file
 
@@ -34,6 +38,7 @@ class HexFile:
         """
         return os.path.splitext(os.path.basename(self._file))[1]
 
+    @property
     def script_path(self):
         """Path to script
 
@@ -42,22 +47,14 @@ class HexFile:
         """
         return os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
 
-    def format_file(self, file_path, format_hex):
-        """Function to convert a hex file to different format like Intel Hex,
-        Motorola Srecord or Binary.
+    @property
+    def s19_records(self):
+        """Data from S19 file
 
-        Args:
-            file_path (str): Path to input file
-            format_hex (str): Format of output file
+        Returns:
+            list: List of dictionaries of records
         """
-        formats_dict = {"hex": "ihex", "s19": "srec", "bin": "binary"}
-        input_extension = os.path.splitext(os.path.basename(file_path))[1][1:]
-        file_name = os.path.splitext(os.path.basename(file_path))[0]
-        os.system(
-            rf"{self.script_path}\src\MinGW\objcopy.exe -I {formats_dict[input_extension]}"
-            + rf" -O {formats_dict[format_hex]} {file_path}"
-            + rf" {os.path.dirname(file_path)}\{file_name}.{format_hex}"
-        )
+        return self._s19_records
 
     def analyse_s19(self, file_path):
         """Analyser for s19 hex files and
@@ -106,6 +103,27 @@ class HexFile:
                 file_data.append(data)
             return file_data
 
+    def format_file(self, file_path, format_hex):
+        """Function to convert a hex file to different format like Intel Hex,
+        Motorola Srecord or Binary.
+
+        Args:
+            file_path (str): Path to input file
+            format_hex (str): Format of output file
+        """
+        formats_dict = {"hex": "ihex", "s19": "srec", "bin": "binary"}
+        input_extension = os.path.splitext(os.path.basename(file_path))[1][1:]
+        file_name = os.path.splitext(os.path.basename(file_path))[0]
+        output = os.system(
+            rf"{self.script_path}\src\MinGW\objcopy.exe -I {formats_dict[input_extension]}"
+            + rf" -O {formats_dict[format_hex]} {file_path}"
+            + rf" {os.path.dirname(file_path)}\{file_name}.{format_hex}"
+        )
+        if output == 0:
+            return True
+        else:
+            return False
+
     def crc_check(self, data_hex):
         """Function to check crc checksum from data hex.
 
@@ -122,3 +140,9 @@ class HexFile:
             sum_data += int("0x" + byte, 16)
         int_checksum = ((sum_data ^ 0xFF) + 1) & 0xFF - 1
         return "{0:0{1}x}".format(int_checksum, 2)
+
+    def find_record_by_address(self, address):
+        odds = int(self.s19_records[2]["address"]) - int(self.s19_records[1]["address"])
+        division_result = int(address) / odds
+        print(division_result)
+        print(self.s19_records[int(division_result)])
