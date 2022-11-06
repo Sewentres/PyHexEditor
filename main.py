@@ -1,7 +1,7 @@
 """Main python starting script for Hex modification
 """
 import argparse
-from src.srecord import HexFile
+from src import HexFile
 
 
 def cmdline_args():
