@@ -2,6 +2,7 @@
 """
 import argparse
 from src import HexFile
+import os
 
 
 def cmdline_args():
@@ -26,4 +27,5 @@ if __name__ == "__main__":
     Hex = HexFile(args.PATH)
     # for data in Hex.s19_records:
     #     print(data)
-    Hex.find_record_by_address("045180")
+    Hex.find_record_by_address("0x045180")
+    print(os.path.realpath(__file__))

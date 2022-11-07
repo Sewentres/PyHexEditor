@@ -142,7 +142,14 @@ class HexFile:
         return "{0:0{1}x}".format(int_checksum, 2)
 
     def find_record_by_address(self, address):
-        odds = int(self.s19_records[2]["address"]) - int(self.s19_records[1]["address"])
-        division_result = int(address) / odds
-        print(division_result)
-        print(self.s19_records[int(division_result)])
+        """Function to find record by address
+
+        Args:
+            address (str): address of record
+
+        Returns:
+            dict: Record of data
+        """
+        division_result = int(address, base=16) / 16 + 2
+        print(self.s19_records[int(division_result) - 1])
+        return self.s19_records[int(division_result) - 1]
