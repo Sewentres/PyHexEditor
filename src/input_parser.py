@@ -21,7 +21,7 @@ class ArgumentsInputs:
         parser.add_argument("--PATH", help="Path to hex file", required=False)
         parser.add_argument(
             "--UNITTESTS",
-            help="Perform unit tests",
+            help="Flag to perform unit tests",
             required=False,
             action=argparse.BooleanOptionalAction,
         )

@@ -12,8 +12,7 @@ if __name__ == "__main__":
     if args.unit_tests:
         unit_tests = TestRunner()
 
-    Hex = HexFile(args.path)
-    # for data in Hex.s19_records:
-    #     print(data)
-    Hex.find_record_by_address("0x045180")
-    print(os.path.realpath(__file__))
+    else:
+        Hex = HexFile(args.path)
+        for data in Hex.s19_records:
+            print(data)
