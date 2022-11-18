@@ -180,3 +180,48 @@ class HexFile:
                 the_file.write(
                     f"{data['type']}{data['count']}{data['address']}{data['data']}{data['crc']}\n"
                 )
+
+    def data_analyse_s19(self, file_path):
+        """Data analyser for s19 hex files and
+
+        Args:
+            file_path (str): Path to input file that will be analysed
+
+        Returns:
+            list: List that contains dictionary of hex data from s19 file
+        """
+        # print("*** ANALYSING S19 FILE")
+        file_data = {}
+        with open(file_path, "r", encoding="UTF-8") as file:
+            lines = file.readlines()
+            for line in lines:
+                data = line[:-1]
+                if data[1:2] == "0":
+                    address = "0000"
+                    address_length = 8
+                    data_hex = data[address_length:-2]
+                if data[1:2] == "1" or data[1:2] == "9":
+                    address_length = 8
+                    address = data[4:address_length]
+                    data_hex = data[address_length:-2]
+                    if data[1:2] == "9":
+                        data_hex = ""
+                if data[1:2] == "2" or data[1:2] == "8":
+                    address_length = 10
+                    address = data[4:address_length]
+                    data_hex = data[address_length:-2]
+                    if data[1:2] == "8":
+                        data_hex = ""
+                if data[1:2] == "3" or data[1:2] == "7":
+                    address_length = 12
+                    address = data[4:address_length]
+                    data_hex = data[address_length:-2]
+                    if data[1:2] == "7":
+                        data_hex = ""
+                if data[1:2] == "1" or data[1:2] == "2" or data[1:2] == "3":
+                    for index in range(0, int(len(data_hex) / 2)):
+                        byte_data = data_hex[index * 2 : index * 2 + 2]
+                        byte_address = int(address, 16) + index
+                        file_data[hex(byte_address)] = byte_data
+
+            return file_data
