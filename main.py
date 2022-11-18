@@ -11,8 +11,10 @@ if __name__ == "__main__":
     args = ArgumentsInputs()
     if args.unit_tests:
         unit_tests = TestRunner()
-
+    elif args.debug:
+        breakpoint()
     else:
         Hex = HexFile(args.path)
         for data in Hex.s19_records:
             print(data)
+        exit(1)
