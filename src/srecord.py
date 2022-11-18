@@ -65,7 +65,7 @@ class HexFile:
         Returns:
             list: List that contains dictionary of hex data from s19 file
         """
-        print("*** ANALYSING S19 FILE")
+        # print("*** ANALYSING S19 FILE")
         file_data = []
         with open(file_path, "r", encoding="UTF-8") as file:
             lines = file.readlines()
@@ -101,7 +101,7 @@ class HexFile:
                     "crc": data[-2:],
                 }
                 file_data.append(data)
-            print("*** DONE...")
+            # print("*** DONE...")
             return file_data
 
     def format_file(self, file_path, format_hex):
@@ -153,6 +153,30 @@ class HexFile:
         Returns:
             dict: Record of data
         """
+        for index, data in enumerate(self.s19_records):
+            if data["address"] == address:
+                return self.s19_records[index]
+        return None
+
+    def delete_record_by_address(self, address):
+        """Functon used to delete record using address
+
+        Args:
+            address (str): address of data which will be deleted
+        """
         division_result = int(address, base=16) / 16 + 2
-        print(self.s19_records[int(division_result) - 1])
-        return self.s19_records[int(division_result) - 1]
+        for index, data in enumerate(self.s19_records):
+            if data["address"] == address:
+                self.s19_records.remove(data)
+
+    def save_file(self, output_file):
+        """Function to save new prepared binary file to s19 format
+
+        Args:
+            output_file (str): Path of output file
+        """
+        with open(output_file, "w") as the_file:
+            for data in self.s19_records:
+                the_file.write(
+                    f"{data['type']}{data['count']}{data['address']}{data['data']}{data['crc']}\n"
+                )
