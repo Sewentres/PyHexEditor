@@ -65,7 +65,7 @@ class HexFile:
         Returns:
             list: List that contains dictionary of hex data from s19 file
         """
-        print("TESTING ANALYSING S19 FILES")
+        print("*** ANALYSING S19 FILE")
         file_data = []
         with open(file_path, "r", encoding="UTF-8") as file:
             lines = file.readlines()
@@ -101,6 +101,7 @@ class HexFile:
                     "crc": data[-2:],
                 }
                 file_data.append(data)
+            print("*** DONE...")
             return file_data
 
     def format_file(self, file_path, format_hex):
@@ -138,7 +139,9 @@ class HexFile:
         for i in range(0, int(len(data_hex) / 2)):
             byte = data_hex[i * 2 : (i * 2) + 2]
             sum_data += int("0x" + byte, 16)
-        int_checksum = ((sum_data ^ 0xFF) + 1) & 0xFF - 1
+        sum_data = hex(sum_data).replace("0x", "")
+        sum_data = int("0x" + sum_data[-2:], 16)
+        int_checksum = 0xFF - sum_data
         return "{0:0{1}x}".format(int_checksum, 2)
 
     def find_record_by_address(self, address):
